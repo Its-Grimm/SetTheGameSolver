@@ -2,8 +2,8 @@
 #Uses Python 3.10.6 to read the setdata file, and then solves the set board on the actual website for you
 import time
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 #Reading file taken from: https://www.w3schools.com/python/python_file_open.asp
 #Open the Set results data file (expFile.txt) using fileReader to control the file 

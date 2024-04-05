@@ -27,8 +27,8 @@ public class ExportToFile {
             System.out.println("Wrote to the file properly!");
 
             // Running python file
-            ProcessBuilder pb = new ProcessBuilder("python3 ./readAndPlay.py");
-            pb.start();
+            // ProcessBuilder pb = new ProcessBuilder("python3 ./readAndPlay.py");
+            // pb.start();
         }
         catch (IOException e){
             System.out.println("An error occured!");
