@@ -1,0 +1,44 @@
+Solid Squigles 
+1 - 03 : Solid Red Squigle
+04 - 06 : Solid Purple Squigle
+07 - 09 : Solid Green Squigle
+
+Solid Diamonds
+10 - 12 : Solid Red Diamond
+13 - 15 : Solid Purple Diamond
+16 - 18 : Solid Green Diamond
+
+Solid Ovals
+19 - 21 : Solid Red Oval
+22 - 24 : Solid Purple Oval
+25 - 27 : Solid Green Oval
+
+Lined Squigles
+28 - 30 : Lined Red Squigle
+31 - 33 : Lined Purple Squigle
+34 - 36 : Lined Green Squigle
+
+Lined Diamonds
+37 - 39 : Lined Red Diamond
+40 - 42 : Lined Purple Diamond
+43 - 45 : Lined Green Diamond
+
+Lined Ovals
+46 - 48 : Lined Red Oval
+49 - 51 : Lined Purple Oval
+52 - 54 : Lined Green Oval
+
+Empty Squigles
+55 - 57 : Empty Red Squigle
+58 - 60 : Empty Purple Squigle
+61 - 63 : Empty Green Squigle
+
+Empty Diamonds
+64 - 66 : Empty Red Diamond
+67 - 69 : Empty Purple Diamond
+70 - 72 : Empty Green Diamond
+
+Empty Ovals
+73 - 75 : Empty Red Oval
+76 - 78 : Empty Purple Oval
+79 - 81 : Empty Green Oval
