@@ -1,0 +1,8 @@
+Not sure how well all of this will work on your system. Python script should run seamlessly in Python v3.10. 
+
+To get the python script to work:
+Download GeckoDriver.exe (for allowing python script to use/control Firefox) Link: https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-win64.zip
+Extract to whatever folder
+Add GeckoDriver to PATH 
+pip install selenium
+Should work from there
