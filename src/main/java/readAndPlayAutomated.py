@@ -14,9 +14,22 @@ time.sleep(3)
 
 
 # Read in each card on the board into a 2dim array, making the board understandable to the code
+# Creating and initializing the board for the values to get read into
+rows, cols = (3, 4)
+board = [[0]*cols for _ in range(rows)]
 
-
-
+# Reading in the values from the website into the 2dim array
+row, col = (0, 0)
+for cardNum in range(0, 12):
+    # Gets and stores the card number extracted from the https://webpath/image.png link  
+    card1Box = driver.find_element(By.NAME, "card" + str(cardNum+1))
+    card = card1Box.get_attribute("src").removeprefix("https://www.setgame.com/sites/all/modules/setgame_set/assets/images/new/").removesuffix(".png")
+    # For proper adding to the 2dim array from one number
+    if cardNum != 0 and cardNum % 4 == 0:
+        row += 1
+        col = 0
+    board[row][col] = card
+    col += 1
 
 
 # SOLVER (REPURPOSE LATER)
