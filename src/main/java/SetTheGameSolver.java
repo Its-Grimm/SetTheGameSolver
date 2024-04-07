@@ -12,7 +12,7 @@ public class SetTheGameSolver{
         // //All of the cards which will be fed into the board, along with the counter to ensure 11 cards will be added 
         // //Tried to do this with array, but way easier to ensure no dupes with Sets
         // //Also swapped from regular HashSet to LinkedHashSet to maintain insertion order. Found from here: http://www.java2s.com/Tutorial/Java/0140__Collections/CreatingaSetThatRetainsOrderofInsertion.htm
-        Set<Cards> allCards = new LinkedHashSet<Cards>();    
+        Set<Cards> allCards = new LinkedHashSet<Cards>();
         int counter = 0;
 
         //While there are cards to add to the board
@@ -21,12 +21,12 @@ public class SetTheGameSolver{
             String str = sc.nextLine().toLowerCase();
             int strLength = str.length();
 
-            if (strLength == 4){ 
+            if (strLength == 4){
                 //Splitting word into char array and running it through the validator (checks if a card is valid with no duplicate properties)
                 char[] valid = validateCardProperties(str.toCharArray());
 
                 //If it did not return empty array
-                if (valid.length != 0){ 
+                if (valid.length != 0){
                     //Catches duplicate cards inputted
                     Cards newCard = new Cards(valid[0], valid[1], valid[2], valid[3]);
                     Cards[] oldCards = allCards.toArray(new Cards[allCards.size()]);
@@ -107,7 +107,7 @@ public class SetTheGameSolver{
             }
         }
         System.out.println();
-        return allSets; 
+        return allSets;
     }
     
     //For finding if a combination of three cards are a set
