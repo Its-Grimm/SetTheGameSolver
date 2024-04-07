@@ -1,0 +1,6 @@
+g o 3 e-g d 3 f-g s 3 l ||| AT 1:5:7
+r d 1 f-p o 2 e-g s 3 l ||| AT 2:3:7
+p o 2 e-g o 2 e-r o 2 e ||| AT 3:11:12
+p o 1 l-g s 3 l-r d 2 l ||| AT 4:7:10
+p d 1 f-g s 3 l-r o 2 e ||| AT 6:7:12
+r d 1 e-p s 3 e-g o 2 e ||| AT 8:9:11

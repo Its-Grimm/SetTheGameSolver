@@ -68,3 +68,5 @@ print()
 
 print("~ALL DONE!~")
 print("~Closing Firefox~")
+time.sleep(2)
+driver.quit()
