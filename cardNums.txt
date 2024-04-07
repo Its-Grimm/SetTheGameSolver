@@ -1,5 +1,5 @@
 Solid Squigles 
-1 - 03 : Solid Red Squigle
+01 - 03 : Solid Red Squigle
 04 - 06 : Solid Purple Squigle
 07 - 09 : Solid Green Squigle
 
