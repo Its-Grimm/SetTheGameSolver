@@ -6,12 +6,47 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+
+# Datatable for converting card number to its properties for comparison and finding sets
+def dataTable(cardNum):
+    # Class for card type
+    # Quantity: 0 = 1         1 = 2           2 = 3
+    # Shape:    0 = squigle   1 = diamond     2 = oval
+    # Fill:     0 = solid     1 = lined       2 = empty
+    # Colour:   0 = red       1 = purple      2 = green
+    numbers = [0, 1, 2]
+    fills   = [0, 1, 2]
+    colours = [0, 1, 2]
+    shapes  = [0, 1, 2]
+    
+    # For testing with word values 
+    # numbers = ["1", "2", "3"]
+    # shapes  = ["Squigles", "Diamonds", "Ovals"]
+    # fills   = ["Solid", "Lined", "Empty"]
+    # colours = ["Red", "Purple", "Green"]
+    
+    # Modulo by 3 (3 quantity possibilites for each card)
+    numberIndex = (cardNum - 1) % 3
+    # Divide by 27 (27 cards of each fill for each shape type)
+    fillIndex = (cardNum - 1) // 27
+    # Modulo by 9 (3 cards of each colour for each fill type), then divide by the three colour possibilities
+    colourIndex = ((cardNum - 1) % 9) // 3 
+    # Modulo by 27 (9 squigles + 9 diamonds + 9 ovals) to find its position, then divide by 9 out of the remaining fills 
+    shapeIndex = ((cardNum - 1) % 27) // 9
+    
+    number = numbers[numberIndex]
+    fill   = fills[fillIndex]
+    colour = colours[colourIndex]
+    shape  = shapes[shapeIndex]
+    
+    return number, fill, colour, shape
+
+
 # Opens the setgame website on firefox (may take a little bit to load)
 print("~Opening Firefox~")
 driver = webdriver.Firefox()
 driver.get('https://www.setgame.com/set/puzzle')
 time.sleep(3)
-
 
 # Read in each card on the board into a 2dim array, making the board understandable to the code
 # Creating and initializing the board for the values to get read into
