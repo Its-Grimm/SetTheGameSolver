@@ -30,6 +30,8 @@ for cardNum in range(0, 12):
         col = 0
     board[row][col] = card
     col += 1
+    
+
 
 
 # SOLVER (REPURPOSE LATER)
