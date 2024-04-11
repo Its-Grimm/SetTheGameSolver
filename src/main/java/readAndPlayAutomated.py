@@ -63,8 +63,14 @@ for cardNum in range(0, 12):
     if cardNum != 0 and cardNum % 4 == 0:
         row += 1
         col = 0
-    board[row][col] = card
+        # print()
+    board[row][col] = dataTable(int(card))
+    
+    # print(dataTable(board[row][col]))
     col += 1
+    
+# Compare with the card data-table and assign each property (quantity, fill, colour, shape) a digit
+
     
 
 
