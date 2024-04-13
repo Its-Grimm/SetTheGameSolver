@@ -10,8 +10,12 @@ from selenium.webdriver.common.keys import Keys
 print("~Opening Firefox~")
 driver = webdriver.Firefox()
 driver.get('https://www.setgame.com/set/puzzle')
-time.sleep(0.5)
+time.sleep(1)
 
+cookieBox = driver.find_element(By.CLASS_NAME, "decline-button")
+cookieBox.click()
+
+driver.execute_script("window.scrollBy(0, 500)")
 
 # Datatable for converting card number to its properties for comparison and finding sets
 def dataTable(cardNum):
@@ -24,12 +28,6 @@ def dataTable(cardNum):
     fills   = [0, 1, 2]
     colours = [0, 1, 2]
     shapes  = [0, 1, 2]
-    
-    # For testing with word values 
-    # numbers = ["1", "2", "3"]
-    # shapes  = ["Squigles", "Diamonds", "Ovals"]
-    # fills   = ["Solid", "Lined", "Empty"]
-    # colours = ["Red", "Purple", "Green"]
     
     # Modulo by 3 (3 quantity possibilites for each card)
     numberIndex = (cardNum - 1) % 3
@@ -90,39 +88,37 @@ for card1Check in range(0, 12):
                     setCounter += 1
 
 
-# SOLVER (REPURPOSE LATER)
+# SOLVER
 # For each card, add "card" + the num of the card to allow the code to click the right card for each set stored in a 2dim array
 for set in sets:
-    # card1Box = driver.find_element(By.NAME, "card" + str(set[0]))
     for card in set:
-        print(card)
-        card1Box = driver.find_element(By.NAME, "card" + str(card))
-    
-# for board in nums:
-#     for card in board:
-#         cardBox = driver.find_element(By.NAME, "card" + str(card))
-#         print("~Clicking card " + str(card) + " now~")
-#         cardBox.click()
-#         time.sleep(0.75)
-#     print()
-#     time.sleep(0.5)
-# print("~I win again!~")
+        cardBox = driver.find_element(By.NAME, "card" + str(card+1))
+        print("~Clicking card " + str(card+1) + " now~")
+        cardBox.click()
+        time.sleep(0.25)
+    print()
+    time.sleep(0.25)
+print("~I win again!~")
 
-
-# At the win screen, clear the box that says anonymous, and add BotBot instead
+# At the win screen, scroll down then clear the box that says anonymous, and add BotBot instead
+time.sleep(3)
+# driver.execute_script("window.scrollBy(0, 250)")
 nameBox = driver.find_element(By.ID, "edit-submitted-user-id")
-sendBox = driver.find_element(By.NAME, "op")
+submitBox = driver.find_element(By.NAME, "op")
 nameBox.clear()
 
 print("~Typing BotBot~")
 nameBox.send_keys("BotBot")
-time.sleep(5)
+time.sleep(2)
 
 print("~Clicking Submit~")
-sendBox.click()
-time.sleep(3)
+submitBox.click()
+time.sleep(2)
 
 print()
 
 print("~ALL DONE!~")
 print("~Closing Firefox~")
+
+# Closes the browser window at the end of execution
+driver.quit()
