@@ -7,7 +7,12 @@ from selenium.webdriver.common.keys import Keys
 print("~Opening Firefox~")
 driver = webdriver.Firefox()
 driver.get('https://www.setgame.com/set/puzzle')
-time.sleep(0.5)
+time.sleep(1)
+
+cookieBox = driver.find_element(By.CLASS_NAME, "decline-button")
+cookieBox.click()
+
+driver.execute_script("window.scrollBy(0, 500)")
 
 # Datatable for converting card number to its properties for comparison and finding sets
 def dataTable(cardNum):
@@ -44,8 +49,23 @@ def dataTable(cardNum):
     return number, fill, colour, shape
 
 
-rows, cols = (3, 4)
-board = [[0] * cols for _ in range(rows)]
+# For determining if three cards on the board are a set or not
+def isSet(a, b, c):
+    def propertySet(prop):
+        return (a[prop] == b[prop] == c[prop]) or (a[prop] != b[prop] != c[prop] != a[prop])
+    
+    numberSet = propertySet(0)
+    fillSet = propertySet(1)
+    colourSet = propertySet(2)
+    shapeSet = propertySet(3)
+
+    return (numberSet and fillSet and colourSet and shapeSet)
+
+
+
+# Creating the board
+board = [0 for _ in range(12)]
+
 # For printing each line(row)
 # for row in board:
 #     print(row)
@@ -61,32 +81,61 @@ board = [[0] * cols for _ in range(rows)]
 # cardNum = card1Box.get_attribute("src").removeprefix("https://www.setgame.com/sites/all/modules/setgame_set/assets/images/new/").removesuffix(".png")
 # print("Card Number:", cardNum)
 
-# Gets the card numbers into the 2dim array 
-row, col = (0, 0)
+# Gets the card numbers into the 1dim array
+count = 0
 for cardNum in range(0, 12):
-    # Gets and stores the card number extracted from the https://webpath/image.png link  
-    card1Box = driver.find_element(By.NAME, "card" + str(cardNum+1))
-    card = card1Box.get_attribute("src").removeprefix("https://www.setgame.com/sites/all/modules/setgame_set/assets/images/new/").removesuffix(".png")
-    # For proper adding to the 2dim array from one number
-    if cardNum != 0 and cardNum % 4 == 0:
-        row += 1
-        col = 0
-        # print()
-    board[row][col] = dataTable(int(card))
-    
-    # print(dataTable(board[row][col]))
-    col += 1
-    
-# Compare with the card data-table and assign each property (quantity, fill, colour, shape) a digit
+    cardBox = driver.find_element(By.NAME, "card" + str(cardNum+1))
+    card = cardBox.get_attribute("src").removeprefix("https://www.setgame.com/sites/all/modules/setgame_set/assets/images/new/").removesuffix(".png")
+    board[count] = dataTable(int(card))
+    count += 1
 
+# Implement logic which finds sets from the array
+sets = [[0 for _ in range(3)] for _ in range(6)]
+setCounter = 0
+for card1Check in range(0, 12):
+    for card2Check in range(card1Check + 1, 12):
+        for card3Check in range(card2Check + 1, 12):
+            if isSet(board[card1Check], board[card2Check], board[card3Check]) and card1Check != card2Check and card2Check != card3Check and card3Check != card1Check:
+                # Isolating unique sets (no 0 2 6, 2 0 6, 0 6 2, etc)
+                setIndex = sorted([card1Check, card2Check, card3Check])
+                setStr = str(board[setIndex[0]] + board[setIndex[1]] + board[setIndex[2]])
+                if setStr not in sets:
+                    # print("Set found: ", card1Check, card2Check, card3Check)
+                    sets[setCounter][0] = card1Check
+                    sets[setCounter][1] = card2Check
+                    sets[setCounter][2] = card3Check
+                    setCounter += 1
 
-
-# For printing each element(col) in each row, with a space in between
-for row in board:
-    for col in row:
-        print(col, end=' ')
+# Implement logic to solve on the website with the sets from the array
+for set in sets:
+    for card in set:
+        cardBox = driver.find_element(By.NAME, "card" + str(card+1))
+        print("~Clicking card " + str(card+1) + " now~")
+        cardBox.click()
+        time.sleep(0.25)
     print()
+    time.sleep(0.25)
+print("~I win again!~")
 
+# At the win screen, scroll down then clear the box that says anonymous, and add BotBot instead
+time.sleep(3)
+# driver.execute_script("window.scrollBy(0, 250)")
+nameBox = driver.find_element(By.ID, "edit-submitted-user-id")
+submitBox = driver.find_element(By.NAME, "op")
+nameBox.clear()
+
+print("~Typing BotBot~")
+nameBox.send_keys("BotBot")
+time.sleep(5)
+
+print("~Clicking Submit~")
+submitBox.click()
+time.sleep(3)
+
+print()
+
+print("~ALL DONE!~")
+print("~Closing Firefox~")
 
 # Closes the browser window at the end of execution
 driver.quit()
