@@ -6,6 +6,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+# Opens the setgame website on firefox (may take a little bit to load)
+print("~Opening Firefox~")
+driver = webdriver.Firefox()
+driver.get('https://www.setgame.com/set/puzzle')
+time.sleep(0.5)
+
 
 # Datatable for converting card number to its properties for comparison and finding sets
 def dataTable(cardNum):
@@ -42,50 +48,66 @@ def dataTable(cardNum):
     return number, fill, colour, shape
 
 
-# Opens the setgame website on firefox (may take a little bit to load)
-print("~Opening Firefox~")
-driver = webdriver.Firefox()
-driver.get('https://www.setgame.com/set/puzzle')
-time.sleep(3)
+# For determining if three cards on the board are a set or not
+def isSet(a, b, c):
+    def propertySet(prop):
+        return (a[prop] == b[prop] == c[prop]) or (a[prop] != b[prop] != c[prop] != a[prop])
+    
+    numberSet = propertySet(0)
+    fillSet = propertySet(1)
+    colourSet = propertySet(2)
+    shapeSet = propertySet(3)
 
-# Read in each card on the board into a 2dim array, making the board understandable to the code
-# Creating and initializing the board for the values to get read into
-rows, cols = (3, 4)
-board = [[0]*cols for _ in range(rows)]
+    return (numberSet and fillSet and colourSet and shapeSet)
 
-# Reading in the values from the website into the 2dim array
-row, col = (0, 0)
+# Creating the board
+board = [0 for _ in range(12)]
+
+# Gets the card numbers into the array
+count = 0
 for cardNum in range(0, 12):
-    # Gets and stores the card number extracted from the https://webpath/image.png link  
     card1Box = driver.find_element(By.NAME, "card" + str(cardNum+1))
     card = card1Box.get_attribute("src").removeprefix("https://www.setgame.com/sites/all/modules/setgame_set/assets/images/new/").removesuffix(".png")
-    # For proper adding to the 2dim array from one number
-    if cardNum != 0 and cardNum % 4 == 0:
-        row += 1
-        col = 0
-        # print()
-    board[row][col] = dataTable(int(card))
-    
-    # print(dataTable(board[row][col]))
-    col += 1
-    
-# Compare with the card data-table and assign each property (quantity, fill, colour, shape) a digit
+    board[count] = dataTable(int(card))
+    count += 1
 
-    
-
+# Logic which finds sets from the array and loads them into a 2dim array for unique sets
+sets = [[0 for _ in range(3)] for _ in range(6)]
+setCounter = 0
+for card1Check in range(0, 12):
+    for card2Check in range(card1Check + 1, 12):
+        for card3Check in range(card2Check + 1, 12):
+            if isSet(board[card1Check], board[card2Check], board[card3Check]) and card1Check != card2Check and card2Check != card3Check and card3Check != card1Check:
+                # Isolating unique sets (no 0 2 6, 2 0 6, 0 6 2, etc)
+                setIndex = sorted([card1Check, card2Check, card3Check])
+                setStr = str(board[setIndex[0]] + board[setIndex[1]] + board[setIndex[2]])
+                if setStr not in sets:
+                    # print("Set found: ", card1Check, card2Check, card3Check)
+                    # sets.append(str(card1Check) + " " + str(card2Check) + " " +  str(card3Check))
+                    sets[setCounter][0] = card1Check
+                    sets[setCounter][1] = card2Check
+                    sets[setCounter][2] = card3Check
+                    setCounter += 1
 
 
 # SOLVER (REPURPOSE LATER)
 # For each card, add "card" + the num of the card to allow the code to click the right card for each set stored in a 2dim array
-for board in nums:
-    for card in board:
-        cardBox = driver.find_element(By.NAME, "card" + str(card))
-        print("~Clicking card " + str(card) + " now~")
-        cardBox.click()
-        time.sleep(0.75)
-    print()
-    time.sleep(0.5)
-print("~I win again!~")
+for set in sets:
+    # card1Box = driver.find_element(By.NAME, "card" + str(set[0]))
+    for card in set:
+        print(card)
+        card1Box = driver.find_element(By.NAME, "card" + str(card))
+    
+# for board in nums:
+#     for card in board:
+#         cardBox = driver.find_element(By.NAME, "card" + str(card))
+#         print("~Clicking card " + str(card) + " now~")
+#         cardBox.click()
+#         time.sleep(0.75)
+#     print()
+#     time.sleep(0.5)
+# print("~I win again!~")
+
 
 # At the win screen, clear the box that says anonymous, and add BotBot instead
 nameBox = driver.find_element(By.ID, "edit-submitted-user-id")
